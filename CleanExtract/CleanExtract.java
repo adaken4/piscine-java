@@ -4,12 +4,10 @@ public class CleanExtract {
 
         s = s.trim();
         String[] parts = s.split("\\|");
-
         StringBuilder result = new StringBuilder();
 
-        for (String part: parts) {
-            part = part.trim();
-
+        for (String rawPart: parts) {
+            String part = rawPart.trim();
             if (part.isEmpty()) continue;
 
             int first = part.indexOf('.');
@@ -19,14 +17,21 @@ public class CleanExtract {
                 continue;
             }
 
+            String extracted;
             if (first == -1) {
-                result.append(part.trim()).append(" ");
+                extracted = part.trim();
             } else if (first == last) {
-                result.append(part.substring(first + 1).trim()).append(" ");
+                extracted = part.substring(first + 1).trim();
             } else {
-                result.append(part.substring(first + 1, last).trim()).append(" ");
+                extracted = part.substring(first + 1, last).trim();
+            }
+            if (!extracted.isEmpty()) {
+                if (result.length() > 0) {
+                    result.append(" ");
+                }
+                result.append(extracted);
             }
         }
-        return result.toString().trim();
+        return result.toString();
     }
 }
