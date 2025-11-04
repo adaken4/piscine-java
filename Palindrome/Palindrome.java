@@ -1,10 +1,28 @@
 public class Palindrome {
     public static boolean isPalindrome(String s) {
         if (s == null) return false;
-        for (int i = 0; i < s.length() / 2; i++) {
-            if (s.charAt(i) != s.charAt(s.length() - 1 - i)) {
+        
+        int left = 0;
+        int right = s.length() - 1;
+        while (left < right) {
+            char l = s.charAt(left);
+            char r = s.charAt(right);
+
+            // Skip non-alphanumeric
+            if (!Character.isLetterOrDigit(l)) {
+                left++;
+                continue;
+            }
+            if (!Character.isLetterOrDigit(r)) {
+                right--;
+                continue;
+            }
+            // Case insensitive comparison
+            if (Character.toLowerCase(l) != Character.toLowerCase(r)) {
                 return false;
-            } 
+            }
+            left++;
+            right--;
         }
         return true;
     }
