@@ -1,7 +1,7 @@
 public class DoOp {
     public static String operate(String[] args) {
         if (args.length != 3) {
-            return "it depends on the input.";
+            return "Error";
         }
 
         String operator = args[1];
