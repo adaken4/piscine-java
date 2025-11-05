@@ -11,7 +11,7 @@ public class DoOp {
             num1 = Integer.parseInt(args[0]);
             num2 = Integer.parseInt(args[2]);
         } catch (NumberFormatException e) {
-            return "it depends on the input.";
+            return "Error";
         }
 
         switch (operator) {
