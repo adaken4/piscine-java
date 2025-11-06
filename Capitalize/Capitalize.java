@@ -2,7 +2,6 @@ import java.io.*;
 
 public class Capitalize {
     public static void capitalize(String[] args) throws IOException {
-        // Check that both input and output file arguments are provided
         if (args.length < 2) {
             return;
         }
@@ -13,26 +12,27 @@ public class Capitalize {
         ) {
             String line;
             while ((line = reader.readLine()) != null) {
-                // Capitalize the first character of each word
-                StringBuilder capitalizedLine = new StringBuilder();
+                StringBuilder out = new StringBuilder(line.length());
                 boolean newWord = true;
 
-                for (char c : line.toCharArray()) {
-                    if (Character.isLetter(c)) {
+                for (int i = 0; i < line.length(); i++) {
+                    char c = line.charAt(i);
+                    if (Character.isWhitespace(c)) {
+                        // preserve whitespace exactly and mark next char as start of a word
+                        out.append(c);
+                        newWord = true;
+                    } else {
                         if (newWord) {
-                            capitalizedLine.append(Character.toUpperCase(c));
+                            out.append(Character.toUpperCase(c));
                             newWord = false;
                         } else {
-                            capitalizedLine.append(Character.toLowerCase(c));
+                            out.append(Character.toLowerCase(c));
                         }
-                    } else {
-                        capitalizedLine.append(c);
-                        newWord = !Character.isLetter(c);
                     }
                 }
 
-                writer.write(capitalizedLine.toString());
-                writer.newLine(); // preserve original line breaks
+                writer.write(out.toString());
+                writer.newLine();
             }
         }
     }
