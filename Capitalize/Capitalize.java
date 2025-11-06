@@ -43,14 +43,18 @@ public class Capitalize {
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
             
-            if (Character.isWhitespace(c)) {
-                result.append(c);
-                capitalizeNext = true;
-            } else if (capitalizeNext) {
-                result.append(Character.toUpperCase(c));
-                capitalizeNext = false;
+            if (Character.isLetter(c)) {
+                if (capitalizeNext) {
+                    result.append(Character.toUpperCase(c));
+                    capitalizeNext = false;
+                } else {
+                    result.append(Character.toLowerCase(c));
+                }
             } else {
-                result.append(Character.toLowerCase(c));
+                result.append(c);
+                if (Character.isWhitespace(c)) {
+                    capitalizeNext = true;
+                }
             }
         }
         
