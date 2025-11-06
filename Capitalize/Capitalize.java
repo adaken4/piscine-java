@@ -3,57 +3,42 @@ import java.io.*;
 public class Capitalize {
     public static void capitalize(String[] args) throws IOException {
         if (args.length < 2) {
-            throw new IllegalArgumentException("Two file paths required: input and output");
+            throw new IllegalArgumentException("Please provide both input and output file names");
         }
         
         String inputFile = args[0];
         String outputFile = args[1];
         
-        BufferedReader reader = null;
-        BufferedWriter writer = null;
+        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
         
-        try {
-            reader = new BufferedReader(new FileReader(inputFile));
-            writer = new BufferedWriter(new FileWriter(outputFile));
-            
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String capitalizedLine = capitalizeWords(line);
-                writer.write(capitalizedLine);
-                writer.newLine();
-            }
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
-            if (writer != null) {
-                writer.close();
-            }
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String capitalizedLine = capitalizeLine(line);
+            writer.write(capitalizedLine);
+            writer.newLine();
         }
+        
+        reader.close();
+        writer.close();
     }
     
-    private static String capitalizeWords(String text) {
-        if (text == null || text.isEmpty()) {
-            return text;
+    private static String capitalizeLine(String line) {
+        if (line == null || line.isEmpty()) {
+            return line;
         }
         
+        String[] words = line.split("\\s+");
         StringBuilder result = new StringBuilder();
-        boolean capitalizeNext = true;
         
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
-            
-            if (Character.isLetter(c)) {
-                if (capitalizeNext) {
-                    result.append(Character.toUpperCase(c));
-                    capitalizeNext = false;
-                } else {
-                    result.append(Character.toLowerCase(c));
-                }
-            } else {
-                result.append(c);
-                if (Character.isWhitespace(c)) {
-                    capitalizeNext = true;
+        for (int i = 0; i < words.length; i++) {
+            if (!words[i].isEmpty()) {
+                String capitalizedWord = words[i].substring(0, 1).toUpperCase() + 
+                                       words[i].substring(1).toLowerCase();
+                result.append(capitalizedWord);
+                
+                if (i < words.length - 1) {
+                    result.append(" ");
                 }
             }
         }
