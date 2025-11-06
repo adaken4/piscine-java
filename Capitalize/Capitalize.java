@@ -2,38 +2,33 @@ import java.io.*;
 
 public class Capitalize {
     public static void capitalize(String[] args) throws IOException {
-        if (args.length < 2) {
-            return;
-        }
+        if (args.length < 2) return;
 
         try (
-            BufferedReader reader = new BufferedReader(new FileReader(args[0]));
-            BufferedWriter writer = new BufferedWriter(new FileWriter(args[1]));
+            FileReader fr = new FileReader(args[0]);
+            FileWriter fw = new FileWriter(args[1])
         ) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                StringBuilder out = new StringBuilder(line.length());
-                boolean newWord = true;
+            boolean newWord = true;
+            int ch;
 
-                for (int i = 0; i < line.length(); i++) {
-                    char c = line.charAt(i);
-                    if (Character.isWhitespace(c)) {
-                        // preserve whitespace exactly and mark next char as start of a word
-                        out.append(c);
-                        newWord = true;
+            while ((ch = fr.read()) != -1) {
+                char c = (char) ch;
+
+                if (Character.isLetter(c)) {
+                    if (newWord) {
+                        fw.write(Character.toUpperCase(c));
+                        newWord = false;
                     } else {
-                        if (newWord) {
-                            out.append(Character.toUpperCase(c));
-                            newWord = false;
-                        } else {
-                            out.append(Character.toLowerCase(c));
-                        }
+                        fw.write(Character.toLowerCase(c));
                     }
+                } else {
+                    fw.write(c);
+                    // Treat any non-letter (including spaces, punctuation, etc.) as a word boundary
+                    newWord = true;
                 }
-
-                writer.write(out.toString());
-                writer.newLine();
             }
+
+            fw.flush();
         }
     }
 }
