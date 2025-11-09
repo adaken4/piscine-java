@@ -71,16 +71,21 @@ public class Planet extends CelestialObject {
     }
 
     @Override
-    public int hashCode() {
-        return centerStar != null ? centerStar.hashCode() : 0;
-    }
-
-    @Override
     public boolean equals(Object obj) {
+        if (!super.equals(obj)) {  // First check parent class equality
+            return false;
+        }
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Planet planet = (Planet) obj;
         return centerStar != null ? centerStar.equals(planet.centerStar) : planet.centerStar == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();  // Include parent class hashCode
+        result = 31 * result + (centerStar != null ? centerStar.hashCode() : 0);
+        return result;
     }
 
     @Override
