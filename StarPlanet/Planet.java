@@ -90,7 +90,7 @@ public class Planet extends CelestialObject {
 
     @Override
     public String toString() {
-        double distanceWithCenterStar = CelestialObject.getDistanceBetween(this, centerStar) / CelestialObject.KM_IN_ONE_AU;
+        double distanceWithCenterStar = CelestialObject.getDistanceBetween(this, centerStar);
         return String.format("%s circles around %s at the %.3f AU", getName(), centerStar.getName(), distanceWithCenterStar);
     }
 }
