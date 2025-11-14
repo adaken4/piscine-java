@@ -53,7 +53,6 @@
 // Uruk : KO
 // Aragorn : 8/20
 // $
-package AdventureCharacter;
 
 public class Character {
     final private int maxHealth;
