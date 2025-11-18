@@ -45,12 +45,18 @@ import java.util.List;
 public class SortList {
     public static List<Integer> sort(List<Integer> list) {
         List<Integer> sorted = new ArrayList<>(list);
+        if (list == null) {
+            return sorted;
+        }
         Collections.sort(sorted);
         return sorted;
     }
 
     public static List<Integer> sortReverse(List<Integer> list) {
         List<Integer> sorted = new ArrayList<>(list);
+        if (list == null) {
+            return sorted;
+        }
         sorted.sort((a, b) -> b.compareTo(a));
         return sorted;
     }
