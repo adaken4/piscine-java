@@ -97,7 +97,7 @@ public class ParseDate {
         
         // Find seconds - look for number before "secondes"
         for (int i = 0; i < parts.length; i++) {
-            if (parts[i].equals("secondes")) {
+            if (parts[i].equals("secondes") || parts[i].equals("seconds")) {
                 seconds = Integer.parseInt(parts[i - 1]);
                 break;
             }
