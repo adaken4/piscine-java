@@ -59,20 +59,38 @@ public class ParseDate {
         if (stringDate == null) {
             return null;
         }
-        String[] months = {
+        String[] monthsFr = {
             "janvier", "février", "mars", "avril", "mai", "juin",
             "juillet", "août", "septembre", "octobre", "novembre", "décembre"
+        };
+
+        String[] monthsEn = {
+            "january", "february", "march", "april", "may", "june",
+            "july", "august", "september", "october", "november", "december"
         };
 
         String[] parts = stringDate.split(" ");
         int day = Integer.parseInt(parts[1]);
         int month = 0;
-        for (int i = 0; i < months.length; i++) {
-            if (months[i].equals(parts[2])) {
+
+        String monthStr = parts[2].toLowerCase();
+
+        for (int i = 0; i < monthsFr.length; i++) {
+            if (monthsFr[i].equals(monthStr)) {
                 month = i + 1;
                 break;
             }
         }
+
+        if (month == 0) {
+            for (int i = 0; i < monthsEn.length; i++) {
+                if (monthsEn[i].equals(monthStr)) {
+                    month = i + 1;
+                    break;
+                }
+            }
+        }
+        
         int year = Integer.parseInt(parts[3]);
 
         return LocalDate.of(year, month, day);
