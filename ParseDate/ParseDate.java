@@ -104,7 +104,7 @@ public class ParseDate {
         }
         
         // Check if it's evening time (PM)
-        if (stringDate.contains("soir") && hours < 12) {
+        if (stringDate.contains("soir") || stringDate.contains("evening") && hours < 12) {
             hours += 12;
         }
 
