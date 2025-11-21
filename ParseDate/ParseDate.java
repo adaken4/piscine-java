@@ -82,11 +82,28 @@ public class ParseDate {
         if (stringDate == null) {
             return null;
         }
-        String[] parts = stringDate.split(", ");
-        int hours = Integer.parseInt(parts[0].split(" ")[0]);
-        int minutes = Integer.parseInt(parts[1].split(" ")[0]);
-        int seconds = Integer.parseInt(parts[2].split(" ")[0]);
+        String[] parts = stringDate.split(" ");
+        int hours = Integer.parseInt(parts[0]);
+        int minutes = 0;
+        int seconds = 0;
 
+        // Find minutes - look for number before "minutes"
+        for (int i = 0; i < parts.length; i++) {
+            if (parts[i].equals("minutes")) {
+                minutes = Integer.parseInt(parts[i - 1]);
+                break;
+            }
+        }
+        
+        // Find seconds - look for number before "secondes"
+        for (int i = 0; i < parts.length; i++) {
+            if (parts[i].equals("secondes")) {
+                seconds = Integer.parseInt(parts[i - 1]);
+                break;
+            }
+        }
+        
+        // Check if it's evening time (PM)
         if (stringDate.contains("soir") && hours < 12) {
             hours += 12;
         }
@@ -94,30 +111,3 @@ public class ParseDate {
         return LocalTime.of(hours, minutes, seconds);
     }
 }
-
-// /tmp/jansi-2.4.2-32f2b17ae3211495-libjansi.so.lck (Read-only file system)
-// == JUnit Platform Test Run ==
-
-// Test run finished after 180 ms
-// [         2 containers found      ]
-// [         0 containers skipped    ]
-// [         2 containers started    ]
-// [         0 containers aborted    ]
-// [         2 containers successful ]
-// [         0 containers failed     ]
-// [         7 tests found           ]
-// [         0 tests skipped         ]
-// [         7 tests started         ]
-// [         5 tests aborted         ]
-// [         1 tests successful      ]
-// [         1 tests failed          ]
-
-
-// Failures:
-//   1) parseTimeFormat_shouldReturnNull_whenStringIsNull() -> java.lang.NullPointerException: Cannot invoke "String.split(String)" because "stringDate" is null
-// java.lang.NullPointerException: Cannot invoke "String.split(String)" because "stringDate" is null
-// 	at ParseDate.parseTimeFormat(ParseDate.java:76)
-// 	at ParseDateTest.parseTimeFormat_shouldReturnNull_whenStringIsNull(ParseDate_test.java:80)
-// 	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-// 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
-// 	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
