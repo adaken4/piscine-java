@@ -55,7 +55,7 @@ public abstract class Character {
     private final int maxHealth;
     private int currentHealth;
     private final String name;
-    protected Weapon weapon;
+    private Weapon weapon;
 
     private static List<Character> allCharacters = new ArrayList<>();
 

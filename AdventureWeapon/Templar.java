@@ -86,7 +86,7 @@ public class Templar extends Character implements Healer, Tank {
     @Override
     public void attack(Character target) {
         heal(this);
-        target.takeDamage(weapon.getDamage());
+        target.takeDamage(getWeapon().getDamage());
     }
 
     public void heal(Character character) {
@@ -101,6 +101,6 @@ public class Templar extends Character implements Healer, Tank {
         if (getCurrentHealth() == 0) {
             return String.format("%s has been beaten, even with its %d shield. So bad, it could heal %d HP.", getName(), getShield(), getHealCapacity());
         }
-        return String.format("%s is a strong Templar with %d HP. It can heal %d HP and has a shield of %d. He has the weapon %s", getName(), getCurrentHealth(), getHealCapacity(), getShield(), weapon.getName());
+        return String.format("%s is a strong Templar with %d HP. It can heal %d HP and has a shield of %d. He has the weapon %s", getName(), getCurrentHealth(), getHealCapacity(), getShield(), getWeapon().getName());
     }
 }

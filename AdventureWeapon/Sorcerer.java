@@ -63,7 +63,7 @@ public class Sorcerer extends Character implements Healer {
     @Override
     public void attack(Character target) {
         heal(this);
-        target.takeDamage(weapon.getDamage());
+        target.takeDamage(getWeapon().getDamage());
     }
 
     @Override
@@ -83,6 +83,6 @@ public class Sorcerer extends Character implements Healer {
         if (getCurrentHealth() == 0) {
             return String.format("%s is a dead sorcerer. So bad, it could heal %d HP.", getName(), getHealCapacity());
         }
-        return String.format("%s is a sorcerer with %d HP. It can heal %d HP. He has the weapon %s", getName(), getCurrentHealth(), getHealCapacity(), weapon.getName());
+        return String.format("%s is a sorcerer with %d HP. It can heal %d HP. He has the weapon %s", getName(), getCurrentHealth(), getHealCapacity(), getWeapon().getName());
     }
 }
