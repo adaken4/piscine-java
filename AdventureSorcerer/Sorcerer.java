@@ -65,7 +65,7 @@ public class Sorcerer extends Character implements Healer {
         if (character.getCurrentHealth() + healCapacity > character.getMaxHealth()) {
             character.setCurrentHealth(character.getMaxHealth());
         } else {
-            character.setCurrentHealth(healCapacity);
+            character.setCurrentHealth(character.getCurrentHealth() + healCapacity);
         }
     }
 
