@@ -54,7 +54,7 @@ import java.util.List;
 
 public class Character {
     private final int maxHealth;
-    protected int currentHealth;
+    private int currentHealth;
     private final String name;
 
     private static List<Character> allCharacters = new ArrayList<>();
@@ -72,6 +72,10 @@ public class Character {
 
     public int getCurrentHealth() {
         return currentHealth;
+    }
+
+    public void setCurrentHealth(int health) {
+        this.currentHealth = health;
     }
 
     public String getName() {
