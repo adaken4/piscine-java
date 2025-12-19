@@ -57,27 +57,38 @@ public class RegexReplace {
         String username = parts[0];
         String domain = parts[1];
 
+        // Obfuscate username
         String obfuscatedUsername;
         if (username.contains("-") || username.contains(".") || username.contains("_")) {
             // Hide characters after -, . or _
             obfuscatedUsername = username.replaceAll("([-._]).*", "$1***");
         } else if (username.length() > 3) {
-            // Hide last 3 characters
-            obfuscatedUsername = username.substring(0, username.length() - 3) + "***";
+            // Hide characters from the end
+            int charsToHide = Math.min(3, username.length() - 3);
+            obfuscatedUsername = username.substring(0, username.length() - charsToHide);
+            for (int i = 0; i < charsToHide; i++) {
+                obfuscatedUsername += "*";
+            }
         } else {
             obfuscatedUsername = username;
         }
 
+        // Obfuscate domain
         String[] domainParts = domain.split("\\.");
         String obfuscatedDomain;
         
         if (domainParts.length == 3) {
+            // Format: third.second.top (e.g., example.co.edu)
+            // Hide third and top level domains
             obfuscatedDomain = "*******." + domainParts[1] + ".***";
         } else if (domainParts.length == 2) {
+            // Format: second.top (e.g., example.com)
             String topLevel = domainParts[1];
             if (topLevel.equals("com") || topLevel.equals("org") || topLevel.equals("net")) {
+                // Don't hide .com, .org, .net
                 obfuscatedDomain = "*******." + topLevel;
             } else {
+                // Hide both second and top level
                 obfuscatedDomain = "*******.***";
             }
         } else {
