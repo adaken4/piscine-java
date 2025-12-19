@@ -49,7 +49,7 @@
 
 public class RegexReplace {
     public static String removeUnits(String s) {
-        return s.replaceAll("(\\d)\\s*(cm|€)", "$1");
+        return s.replaceAll("(\\d)(cm|€)(?=\\s)", "$1");
     }
     
     public static String obfuscateEmail(String s) {
@@ -57,17 +57,31 @@ public class RegexReplace {
         String username = parts[0];
         String domain = parts[1];
 
-        String obfuscatedUsername = username.replaceAll("(?<=[-._])[a-zA-Z]|(?<=^.{3}).", "*");
-
-        String[] domainParts = domain.split("\\.");
-        String obfuscatedDomain = "";
-
-        if (domainParts.length == 3) {
-            obfuscatedDomain = String.format("%s.%s.%s", obfuscatedUsername, domainParts[1], domainParts[2]);
+        String obfuscatedUsername;
+        if (username.contains("-") || username.contains(".") || username.contains("_")) {
+            obfuscatedUsername = username.replaceAll("(?<=[-._]).(?=[-._])|(?<=[-._]).|.(?=[-._])", "*");
+        } else if (username.length() > 3) {
+            obfuscatedUsername = username.substring(0, username.length() - 3) + "***";
         } else {
-            obfuscatedDomain = String.format("%s.%s", obfuscatedUsername, domainParts[1]);
+            obfuscatedUsername = username;
         }
 
-        return String.format("%s@%s", obfuscatedUsername, obfuscatedDomain);
+        String[] domainParts = domain.split("\\.");
+        String obfuscatedDomain;
+        
+        if (domainParts.length == 3) {
+            obfuscatedDomain = "*******." + domainParts[1] + ".***";
+        } else if (domainParts.length == 2) {
+            String topLevel = domainParts[1];
+            if (topLevel.equals("com") || topLevel.equals("org") || topLevel.equals("net")) {
+                obfuscatedDomain = "*******." + topLevel;
+            } else {
+                obfuscatedDomain = "*******.***";
+            }
+        } else {
+            obfuscatedDomain = domain;
+        }
+
+        return obfuscatedUsername + "@" + obfuscatedDomain;
     }
 }
