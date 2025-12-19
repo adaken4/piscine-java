@@ -59,6 +59,9 @@ import java.util.Locale;
 public class FormatDate {
 
     public static String formatToFullText(LocalDateTime dateTime) {
+        if (dateTime == null) {
+            return null;
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
                 "d MMMM 'de l''an' yyyy 'à' H'h'm'm 'et' s's'",
                 Locale.FRANCE
@@ -67,6 +70,9 @@ public class FormatDate {
     }
 
     public static String formatSimple(LocalDate date) {
+        if (date == null) {
+            return null;
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(
             "MMMM d yy",
             Locale.ITALIAN
@@ -75,7 +81,9 @@ public class FormatDate {
     }
 
     public static String formatIso(LocalTime time) {
+        if (time == null) {
+            return null;
+        }
         return time.format(DateTimeFormatter.ISO_LOCAL_TIME);
     }
-
 }
