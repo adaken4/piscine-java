@@ -53,48 +53,56 @@ public class RegexReplace {
     }
     
     public static String obfuscateEmail(String s) {
-        String[] parts = s.split("@");
+        if (s == null) return null;
+    
+        // Split the email into username and domain
+        String[] parts = s.split("@", 2);
+        if (parts.length != 2) return s;
+    
         String username = parts[0];
         String domain = parts[1];
-
+    
         // Obfuscate username
-        String obfuscatedUsername;
-        if (username.contains("-") || username.contains(".") || username.contains("_")) {
-            // Hide characters after -, . or _
-            obfuscatedUsername = username.replaceAll("([-._]).*", "$1***");
-        } else if (username.length() > 3) {
-            // Hide characters from the end
-            int charsToHide = Math.min(3, username.length() - 3);
-            obfuscatedUsername = username.substring(0, username.length() - charsToHide);
-            for (int i = 0; i < charsToHide; i++) {
-                obfuscatedUsername += "*";
+        if (username.matches(".*[-._].*")) {
+             // find last occurrence of -, . or _
+            int lastDot = username.lastIndexOf('.');
+            int lastDash = username.lastIndexOf('-');
+            int lastUnd = username.lastIndexOf('_');
+        
+            int lastSymbol = Math.max(lastDot, Math.max(lastDash, lastUnd));
+        
+            int charsToMask = username.length() - (lastSymbol + 1);
+            if (charsToMask > 0) {
+                username = username.substring(0, lastSymbol + 1) + "*".repeat(charsToMask);
             }
         } else {
-            obfuscatedUsername = username;
-        }
+            if (username.length() > 3) {
+                String prefix = username.substring(0,3);
+                int remaining = username.length() - 3;
+                int statsToAdd = Math.min(3, remaining);
+                username = prefix + "*".repeat(statsToAdd);
 
+                if (remaining > statsToAdd) {
+                    username = username + username.substring(3 + statsToAdd);
+                }
+            }
+            // If length is 3 or less, do nothing
+        }
+    
         // Obfuscate domain
         String[] domainParts = domain.split("\\.");
-        String obfuscatedDomain;
-        
-        if (domainParts.length == 3) {
-            // Format: third.second.top (e.g., example.co.edu)
-            // Hide third and top level domains
-            obfuscatedDomain = "*******." + domainParts[1] + ".***";
+        if (domainParts.length >= 3) {
+            // Format: @<third>.<second>.<top>
+            domain = "*******." + domainParts[domainParts.length - 2] + ".***";
         } else if (domainParts.length == 2) {
-            // Format: second.top (e.g., example.com)
-            String topLevel = domainParts[1];
-            if (topLevel.equals("com") || topLevel.equals("org") || topLevel.equals("net")) {
-                // Don't hide .com, .org, .net
-                obfuscatedDomain = "*******." + topLevel;
+            // Format: @<second>.<top>
+            String topLevelDomain = domainParts[1];
+            if (topLevelDomain.equals("com") || topLevelDomain.equals("org") || topLevelDomain.equals("net")) {
+                domain = "*******." + topLevelDomain;
             } else {
-                // Hide both second and top level
-                obfuscatedDomain = "*******.***";
+                domain = "*******.**";
             }
-        } else {
-            obfuscatedDomain = domain;
         }
-
-        return obfuscatedUsername + "@" + obfuscatedDomain;
+        return username + "@" + domain;
     }
 }
