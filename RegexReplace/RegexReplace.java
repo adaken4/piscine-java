@@ -57,31 +57,17 @@ public class RegexReplace {
         String username = parts[0];
         String domain = parts[1];
 
-        String obfuscatedUsername;
-        if (username.contains("-") || username.contains(".") || username.contains("_")) {
-            obfuscatedUsername = username.replaceAll("(?<=[-._]).(?=[-._])|(?<=[-._]).|.(?=[-._])", "*");
-        } else if (username.length() > 3) {
-            obfuscatedUsername = username.substring(0, username.length() - 3) + "***";
-        } else {
-            obfuscatedUsername = username;
-        }
+        String obfuscatedUsername = username.replaceAll("(?<=[-._])[a-zA-Z]|(?<=^.{3}).", "*");
 
         String[] domainParts = domain.split("\\.");
-        String obfuscatedDomain;
-        
+        String obfuscatedDomain = "";
+
         if (domainParts.length == 3) {
-            obfuscatedDomain = "*******." + domainParts[1] + ".***";
-        } else if (domainParts.length == 2) {
-            String topLevel = domainParts[1];
-            if (topLevel.equals("com") || topLevel.equals("org") || topLevel.equals("net")) {
-                obfuscatedDomain = "*******." + topLevel;
-            } else {
-                obfuscatedDomain = "*******.***";
-            }
+            obfuscatedDomain = String.format("%s.%s.%s", obfuscatedUsername, domainParts[1], domainParts[2]);
         } else {
-            obfuscatedDomain = domain;
+            obfuscatedDomain = String.format("%s.%s", obfuscatedUsername, domainParts[1]);
         }
 
-        return obfuscatedUsername + "@" + obfuscatedDomain;
+        return String.format("%s@%s", obfuscatedUsername, obfuscatedDomain);
     }
 }
