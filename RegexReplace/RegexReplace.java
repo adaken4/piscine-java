@@ -49,7 +49,7 @@
 
 public class RegexReplace {
     public static String removeUnits(String s) {
-        return s.replaceAll("(\\d)\\s(cm|€)", "$1");
+        return s.replaceAll("(\\d)\\s*(cm|€)", "$1");
     }
     
     public static String obfuscateEmail(String s) {
